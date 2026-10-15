@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aprende con Tomás | ¡Atrapa las estrellas!</title>
+<style>
+  :root { --blue:#1769aa; --sky:#eaf7ff; --ink:#18324b; --green:#16794b; --yellow:#ffd75e; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family: "Trebuchet MS", Arial, sans-serif; color:var(--ink); background:linear-gradient(180deg,#eaf7ff,#f9f6ff); min-height:100vh; }
+  button { font:inherit; cursor:pointer; }
+  button:focus-visible { outline:4px solid #ff9f1c; outline-offset:3px; }
+  .wrap { max-width:900px; margin:auto; padding:18px; }
+  header { text-align:center; padding:12px 8px 4px; }
+  .brand { font-size:clamp(1rem,2.5vw,1.2rem); color:#376887; font-weight:bold; }
+  h1 { margin:8px 0; font-size:clamp(2rem,6vw,3.2rem); color:#15558b; }
+  .intro { margin:0 auto; max-width:620px; font-size:1.12rem; line-height:1.5; }
+  .topbar { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:18px 0; }
+  .utility { border:2px solid #c4e2f5; background:#fff; color:#174a70; border-radius:14px; padding:10px 14px; font-weight:bold; }
+  .panel { background:rgba(255,255,255,.96); border:3px solid #cbe8fa; border-radius:26px; padding:clamp(16px,4vw,30px); box-shadow:0 10px 24px rgba(29,93,139,.10); }
+  .stats { display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; margin-bottom:16px; }
+  .pill { background:#edf7ff; border-radius:14px; padding:10px 14px; font-weight:bold; }
+  .question { text-align:center; font-size:clamp(1.3rem,4vw,2rem); font-weight:bold; margin:8px 0 14px; }
+  .playground { min-height:180px; display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:12px; padding:18px; border-radius:20px; background:radial-gradient(circle at 20% 20%,#fff 0 2px,transparent 3px),linear-gradient(135deg,#e8f7ff,#f2edff); border:2px dashed #b6d8ee; overflow:hidden; }
+  .star { font-size:clamp(2.5rem,8vw,4rem); filter:drop-shadow(0 4px 2px #d7c16d); animation:bob 1.8s ease-in-out infinite; user-select:none; }
+  .star:nth-child(2n) { animation-delay:.25s; }
+  .star:nth-child(3n) { animation-delay:.5s; }
+  @keyframes bob { 0%,100% { transform:translateY(0) rotate(-5deg); } 50% { transform:translateY(-9px) rotate(5deg); } }
+  .answers { display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin:20px 0 12px; }
+  .answer { min-width:90px; min-height:68px; border:3px solid #8dc8ed; border-radius:18px; background:#fff; color:#15558b; font-size:1.8rem; font-weight:900; box-shadow:0 4px 0 #b7dff5; transition:transform .15s, background .15s; }
+  .answer:hover { transform:translateY(-3px); background:#f1faff; }
+  .answer:active { transform:translateY(1px); box-shadow:0 2px 0 #b7dff5; }
+  .answer:disabled { cursor:default; opacity:.72; }
+  .feedback { text-align:center; min-height:54px; padding:8px; font-size:1.15rem; font-weight:bold; line-height:1.45; }
+  .feedback.good { color:var(--green); }
+  .feedback.try { color:#945300; }
+  .actions { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:8px; }
+  .primary { border:0; border-radius:16px; background:#1769aa; color:#fff; padding:14px 22px; font-weight:bold; box-shadow:0 4px 0 #0c4c82; }
+  .primary:hover { background:#0d5b99; }
+  .secondary { border:2px solid #c4e2f5; border-radius:16px; background:#fff; color:#174a70; padding:12px 18px; font-weight:bold; }
+  .help { margin:18px 0 0; text-align:center; color:#48657b; font-size:.95rem; line-height:1.5; }
+  .confetti { animation:pop .55s ease-out; }
+  @keyframes pop { 0% { transform:scale(.85); } 60% { transform:scale(1.07); } 100% { transform:scale(1); } }
+  .hidden { display:none !important; }
+  footer { text-align:center; color:#56758b; font-size:.85rem; padding:18px; }
+  @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; } }
+  body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after { animation:none !important; transition:none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">APRENDE CON TOMÁS</div>
+    <h1>⭐ ¡Atrapa las estrellas! ⭐</h1>
+    <p class="intro">Mira con atención. Cuenta las estrellas y elige el número correcto.</p>
+  </header>
+
+  <div class="topbar" aria-label="Opciones del juego">
+    <button class="utility" id="soundToggle" aria-pressed="true">🔊 Sonidos: activados</button>
+    <button class="utility" id="motionToggle" aria-pressed="false">🌿 Reducir movimiento</button>
+  </div>
+
+  <main class="panel">
+    <div class="stats">
+      <div class="pill" id="levelLabel">Nivel: 1</div>
+      <div class="pill" id="scoreLabel">Estrellas ganadas: 0 ⭐</div>
+    </div>
+    <div class="question" id="question" aria-live="polite">¿Cuántas estrellas ves?</div>
+    <div class="playground" id="playground" role="img" aria-label="Estrellas para contar"></div>
+    <div class="answers" id="answers" aria-label="Elige una respuesta"></div>
+    <div class="feedback" id="feedback" aria-live="polite">Cuenta una por una. ¡Tú puedes!</div>
+    <div class="actions">
+      <button class="primary hidden" id="nextButton">Siguiente desafío ➜</button>
+      <button class="secondary" id="restartButton">↻ Volver a empezar</button>
+    </div>
+    <p class="help">Consejo: puedes contar en voz alta o señalar cada estrella. No hay apuro.</p>
+  </main>
+  <footer>Un juego de práctica de Aprende con Tomás · Puedes jugar de nuevo cuando quieras.</footer>
+</div>
+<script>
+(() => {
+  const playground = document.getElementById('playground');
+  const answers = document.getElementById('answers');
+  const feedback = document.getElementById('feedback');
+  const levelLabel = document.getElementById('levelLabel');
+  const scoreLabel = document.getElementById('scoreLabel');
+  const nextButton = document.getElementById('nextButton');
+  const restartButton = document.getElementById('restartButton');
+  const soundToggle = document.getElementById('soundToggle');
+  const motionToggle = document.getElementById('motionToggle');
+
+  let level = 1, score = 0, target = 3, answered = false, soundOn = true, motionReduced = false;
+  let audioContext = null;
+
+  function playTone(kind) {
+    if (!soundOn) return;
+    try {
+      audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioContext.state === 'suspended') audioContext.resume();
+      const now = audioContext.currentTime;
+      const notes = kind === 'good' ? [523.25,659.25,783.99] : [240,190];
+      notes.forEach((freq,i) => {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.type = kind === 'good' ? 'sine' : 'triangle';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.0001, now + i*0.12);
+        gain.gain.exponentialRampToValueAtTime(0.12, now + i*0.12 + 0.025);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + i*0.12 + 0.18);
+        osc.connect(gain); gain.connect(audioContext.destination);
+        osc.start(now + i*0.12); osc.stop(now + i*0.12 + 0.2);
+      });
+    } catch (e) { /* El juego funciona aunque el navegador no permita audio. */ }
+  }
+
+  function randomTarget() {
+    const max = Math.min(5 + Math.floor((level-1)/2), 10);
+    return Math.floor(Math.random() * max) + 1;
+  }
+
+  function newRound() {
+    answered = false;
+    target = randomTarget();
+    levelLabel.textContent = `Nivel: ${level}`;
+    scoreLabel.textContent = `Estrellas ganadas: ${score} ⭐`;
+    playground.innerHTML = '';
+    playground.setAttribute('aria-label', `Hay ${target} estrellas para contar`);
+    for (let i=0; i<target; i++) {
+      const star = document.createElement('span');
+      star.className = 'star';
+      star.textContent = '⭐';
+      star.setAttribute('aria-hidden','true');
+      if (motionReduced) star.style.animation = 'none';
+      playground.appendChild(star);
+    }
+    answers.innerHTML = '';
+    const options = new Set([target]);
+    while (options.size < 3) options.add(Math.max(1, Math.min(10, target + (Math.floor(Math.random()*5)-2) || 1)));
+    [...options].sort(() => Math.random()-.5).forEach(n => {
+      const button = document.createElement('button');
+      button.className = 'answer';
+      button.textContent = n;
+      button.setAttribute('aria-label', `Responder ${n}`);
+      button.addEventListener('click', () => chooseAnswer(n, button));
+      answers.appendChild(button);
+    });
+    feedback.className = 'feedback';
+    feedback.textContent = 'Cuenta una por una. ¡Tú puedes!';
+    nextButton.classList.add('hidden');
+  }
+
+  function chooseAnswer(value, button) {
+    if (answered) return;
+    if (value === target) {
+      answered = true;
+      score++;
+      feedback.className = 'feedback good';
+      feedback.textContent = '¡Muy bien! 🎉 ¡Contaste todas las estrellas!';
+      playground.classList.remove('confetti');
+      void playground.offsetWidth;
+      if (!motionReduced) playground.classList.add('confetti');
+      playTone('good');
+      [...answers.querySelectorAll('button')].forEach(b => b.disabled = true);
+      scoreLabel.textContent = `Estrellas ganadas: ${score} ⭐`;
+      nextButton.classList.remove('hidden');
+      nextButton.focus();
+    } else {
+      feedback.className = 'feedback try';
+      feedback.textContent = '¡Buen intento! Cuenta otra vez con calma y prueba de nuevo.';
+      playTone('try');
+      button.animate?.([{transform:'translateX(0)'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(0)'}], {duration:220});
+    }
+  }
+
+  nextButton.addEventListener('click', () => { level++; newRound(); document.getElementById('question').focus?.(); });
+  restartButton.addEventListener('click', () => { level=1; score=0; newRound(); });
+  soundToggle.addEventListener('click', () => {
+    soundOn = !soundOn;
+    soundToggle.textContent = soundOn ? '🔊 Sonidos: activados' : '🔇 Sonidos: apagados';
+    soundToggle.setAttribute('aria-pressed', String(soundOn));
+    if (soundOn) playTone('good');
+  });
+  motionToggle.addEventListener('click', () => {
+    motionReduced = !motionReduced;
+    document.body.classList.toggle('reduce-motion', motionReduced);
+    motionToggle.textContent = motionReduced ? '🌿 Movimiento reducido: sí' : '🌿 Reducir movimiento';
+    motionToggle.setAttribute('aria-pressed', String(motionReduced));
+    playground.querySelectorAll('.star').forEach(s => s.style.animation = motionReduced ? 'none' : '');
+  });
+  newRound();
+})();
+</script>
+</body>
+</html>
