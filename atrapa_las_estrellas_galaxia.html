@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aprende con Tomás | ¡Atrapa las estrellas!</title>
+<style>
+  :root { --blue:#12bfff; --blue-dark:#10275f; --sky:#07163d; --ink:#f5f7ff; --green:#70f4a0; --yellow:#ffd84d; --purple:#a855f7; --line:#3757c8; }
+  * { box-sizing:border-box; }
+  html { min-height:100%; }
+  body { margin:0; font-family: "Trebuchet MS", Arial, sans-serif; color:var(--ink); background:radial-gradient(ellipse at 78% 12%,rgba(156,45,255,.34),transparent 28rem),radial-gradient(ellipse at 18% 38%,rgba(0,130,255,.25),transparent 24rem),radial-gradient(circle at 50% 80%,rgba(27,57,153,.45),transparent 35rem),linear-gradient(180deg,#03091f 0%,#071640 48%,#100c38 100%); min-height:100vh; }
+  body:before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.62; background-image:radial-gradient(2px 2px at 12% 18%,#fff 50%,transparent 60%),radial-gradient(1px 1px at 76% 22%,#fff 50%,transparent 60%),radial-gradient(2px 2px at 44% 68%,#b7d5ff 50%,transparent 60%),radial-gradient(1px 1px at 88% 74%,#fff 50%,transparent 60%),radial-gradient(2px 2px at 23% 85%,#fff 50%,transparent 60%),radial-gradient(1px 1px at 63% 47%,#fff 50%,transparent 60%); background-size:310px 260px,390px 330px,270px 310px,430px 290px,360px 350px,290px 280px; }
+  button { font:inherit; cursor:pointer; touch-action:manipulation; }
+  button:focus-visible { outline:4px solid #ff9f1c; outline-offset:4px; }
+  .wrap { max-width:1100px; margin:auto; padding:clamp(12px,3vw,28px); position:relative; z-index:1; }
+  header { position:relative; isolation:isolate; overflow:hidden; text-align:center; padding:clamp(22px,5vw,42px) 18px 30px; border:2px solid #2446a6; border-radius:30px; background:radial-gradient(circle at 85% 20%,rgba(255,75,220,.28),transparent 16rem),radial-gradient(circle at 15% 100%,rgba(0,191,255,.24),transparent 17rem),linear-gradient(135deg,rgba(5,18,60,.96),rgba(21,16,77,.96)); box-shadow:0 0 28px rgba(23,111,255,.32),inset 0 0 28px rgba(91,63,255,.16); }
+  header:before, header:after { content:'✦'; position:absolute; z-index:-1; color:rgba(255,190,42,.75); font-size:clamp(3rem,9vw,6rem); line-height:1; }
+  header:before { left:4%; top:10%; transform:rotate(-15deg); }
+  header:after { right:5%; bottom:8%; color:rgba(66,174,232,.45); transform:rotate(15deg); }
+  .brand { display:inline-flex; align-items:center; gap:8px; font-size:.9rem; letter-spacing:.12em; color:#e7f6ff; font-weight:900; background:rgba(6,22,68,.82); border:1px solid #247cff; border-radius:999px; padding:8px 14px; }
+  .eyebrow { margin:18px 0 4px; color:#a6b8ff; font-weight:900; text-transform:uppercase; letter-spacing:.13em; font-size:.78rem; }
+  h1 { margin:5px 0 12px; font-size:clamp(2rem,6.5vw,4rem); line-height:1.05; letter-spacing:-.035em; color:#f8fbff; text-shadow:0 4px 0 #183c91,0 0 24px rgba(0,170,255,.9); }
+  h1 .rainbow { color:#ffd84d; text-shadow:0 4px 0 #9d4b0a,0 0 20px rgba(255,180,35,.65); }
+  .intro { margin:0 auto; max-width:620px; font-size:clamp(1rem,2.5vw,1.2rem); line-height:1.55; color:#e0eaff; }
+  .topbar { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:18px 0; }
+  .range-picker { margin:18px 0; padding:18px; text-align:center; background:linear-gradient(135deg,rgba(8,22,69,.94),rgba(29,20,92,.94)); border:2px solid #7656ff; border-radius:24px; box-shadow:0 0 22px rgba(106,66,255,.22),inset 0 0 18px rgba(33,137,255,.08); }
+  .range-title { margin:0 0 12px; color:#fff; font-size:1.05rem; text-shadow:0 0 12px rgba(142,116,255,.65); font-weight:900; }
+  .range-options { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+  .range-button { border:2px solid #4167e8; border-radius:16px; padding:13px 18px; background:linear-gradient(145deg,#102c76,#17104d); color:#f4f7ff; font-weight:900; box-shadow:0 4px 0 #08163e,0 0 12px rgba(28,133,255,.15); transition:transform .15s,background .15s,border-color .15s; }
+  .range-button:hover { transform:translateY(-2px); }
+  .range-button[aria-pressed="true"] { color:#fff; border-color:#45e7ff; background:linear-gradient(135deg,#087fd7,#4a27b9); box-shadow:0 4px 0 #08163e,0 0 18px rgba(0,202,255,.55); }
+  .range-note { margin:10px 0 0; color:#bdcaff; font-size:.9rem; }
+  .utility { border:2px solid #3158c6; background:linear-gradient(135deg,#0c245f,#17104c); color:#f3f7ff; border-radius:999px; padding:12px 18px; font-weight:800; box-shadow:0 4px 0 #050e2c,0 0 14px rgba(40,108,255,.18); transition:transform .15s,box-shadow .15s; }
+  .utility:hover { transform:translateY(-2px); box-shadow:0 6px 12px rgba(45,112,175,.12); }
+  .panel { position:relative; background:linear-gradient(145deg,rgba(7,20,59,.97),rgba(20,15,66,.97)); border:2px solid #244cc0; border-radius:30px; padding:clamp(16px,4vw,34px); box-shadow:0 0 30px rgba(20,94,255,.2),inset 0 0 28px rgba(70,39,173,.13); }
+  .stats { display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; margin-bottom:22px; }
+  .pill { display:flex; align-items:center; gap:7px; background:linear-gradient(135deg,#102c76,#17215c); border:1px solid #3769db; border-radius:16px; padding:11px 16px; font-weight:900; color:#eaf5ff; }
+  .pill:last-child { background:linear-gradient(135deg,#50318e,#38256c); border-color:#9b70ff; color:#fff0a6; }
+  .question { text-align:center; font-size:clamp(1.45rem,4.4vw,2.35rem); font-weight:900; margin:8px 0 18px; color:#f7f8ff; text-shadow:0 0 15px rgba(68,147,255,.4); }
+  .playground { min-height:clamp(180px,28vw,260px); display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:clamp(8px,2vw,18px); padding:clamp(16px,4vw,28px); border-radius:24px; background:radial-gradient(circle at 8% 18%,#fff 0 1px,transparent 2px),radial-gradient(circle at 82% 32%,#c8d7ff 0 1px,transparent 2px),radial-gradient(circle at 60% 80%,#fff 0 1px,transparent 2px),radial-gradient(ellipse at 80% 10%,rgba(164,56,255,.32),transparent 35%),radial-gradient(ellipse at 15% 85%,rgba(0,185,255,.24),transparent 35%),linear-gradient(135deg,#06143e,#11124e 60%,#21104f); background-size:37px 43px,59px 61px,73px 67px,auto,auto,auto; border:2px solid #3769db; box-shadow:inset 0 0 30px rgba(0,127,255,.25); overflow:hidden; }
+  .star { font-size:clamp(2.5rem,8vw,4.2rem); filter:drop-shadow(0 0 10px rgba(255,198,40,.85)); animation:bob 1.8s ease-in-out infinite; user-select:none; }
+  .star:nth-child(2n) { animation-delay:.25s; }
+  .star:nth-child(3n) { animation-delay:.5s; }
+  .star.moving { animation-name: slideSideways; animation-duration:2.4s; animation-timing-function:ease-in-out; animation-iteration-count:infinite; animation-direction:alternate; }
+  .star.moving:nth-child(2n) { animation-duration:2.9s; }
+  .star.moving:nth-child(3n) { animation-duration:2.1s; }
+  @keyframes slideSideways { from { transform:translateX(-30px) rotate(-8deg); } to { transform:translateX(30px) rotate(8deg); } }
+  @keyframes bob { 0%,100% { transform:translateY(0) rotate(-5deg); } 50% { transform:translateY(-9px) rotate(5deg); } }
+  .answers { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin:24px 0 12px; }
+  .answer { min-width:clamp(82px,15vw,112px); min-height:76px; border:3px solid #3dcbff; border-radius:22px; background:linear-gradient(180deg,#123f9a,#182260); color:#fff; font-size:2rem; font-weight:900; box-shadow:0 5px 0 #071238,0 0 14px rgba(0,174,255,.2); transition:transform .15s,background .15s,box-shadow .15s; }
+  .answer:hover { transform:translateY(-3px); background:linear-gradient(180deg,#196acb,#3730a3); box-shadow:0 8px 0 #071238,0 0 20px rgba(0,174,255,.42); }
+  .answer:active { transform:translateY(2px); box-shadow:0 2px 0 #071238; }
+  .answer:disabled { cursor:default; opacity:.75; }
+  .feedback { text-align:center; min-height:58px; padding:10px 8px; font-size:clamp(1.05rem,2.5vw,1.25rem); font-weight:900; line-height:1.45; }
+  .feedback.good { color:#70f4a0; text-shadow:0 0 10px rgba(48,255,126,.2); }
+  .feedback.try { color:#ffd66b; }
+  .actions { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:8px; }
+  .primary { border:2px solid #75ff91; border-radius:18px; background:linear-gradient(135deg,#35e95e,#0aa53a); color:#fff; padding:15px 24px; font-weight:900; text-shadow:0 1px 2px #08772d; box-shadow:0 5px 0 #075c2a,0 0 18px rgba(35,255,92,.28); transition:transform .15s,filter .15s; }
+  .primary:hover { filter:brightness(1.06); transform:translateY(-2px); }
+  .primary:active { transform:translateY(2px); box-shadow:0 2px 0 #075c2a; }
+  .secondary { border:2px solid #5575d8; border-radius:18px; background:linear-gradient(135deg,#142b6d,#20144e); color:#f3f7ff; padding:13px 20px; font-weight:900; }
+  .help { margin:22px 0 0; text-align:center; color:#d5e2ff; font-size:.98rem; line-height:1.6; background:rgba(30,49,112,.6); border:1px solid #344eab; border-radius:16px; padding:12px 14px; }
+  .confetti { animation:pop .55s ease-out; }
+  @keyframes pop { 0% { transform:scale(.96); } 60% { transform:scale(1.015); } 100% { transform:scale(1); } }
+  .hidden { display:none !important; }
+  footer { text-align:center; color:#b7c8ff; font-size:.85rem; padding:22px 12px 8px; text-shadow:0 0 10px rgba(57,130,255,.35); }
+  @media (max-width:520px) { .wrap {padding:10px;} header {border-radius:22px;} .panel {border-radius:22px;} .stats {justify-content:center;} .pill {justify-content:center; flex:1 1 130px;} .utility {flex:1 1 100%;} .range-button {flex:1 1 100%;} .playground {gap:7px;} .star {font-size:clamp(1.65rem,7vw,2.6rem);} .answer {flex:1 1 26%; min-width:70px;} }
+  @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; } }
+  body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">✦ APRENDE CON TOMÁS ✦</div>
+    <p class="eyebrow">JUEGO DE CONTEO Y ATENCIÓN</p>
+    <h1>¡Atrapa las <span class="rainbow">estrellas!</span> ⭐</h1>
+    <p class="intro">Mira con atención. Cuenta las estrellas y elige el número correcto.</p>
+  </header>
+
+  <div class="topbar" aria-label="Opciones del juego">
+    <button class="utility" id="soundToggle" aria-pressed="true">🔊 Sonidos: activados</button>
+    <button class="utility" id="motionToggle" aria-pressed="false">🌿 Reducir movimiento</button>
+  </div>
+
+  <section class="range-picker" aria-label="Seleccionar rango de números">
+    <p class="range-title">🎯 Elige hasta qué números quieres contar</p>
+    <div class="range-options">
+      <button class="range-button" data-min="1" data-max="10" aria-pressed="true">⭐ Del 1 al 10</button>
+      <button class="range-button" data-min="10" data-max="20" aria-pressed="false">🌟 Del 10 al 20</button>
+      <button class="range-button" data-min="20" data-max="30" aria-pressed="false">🚀 Del 20 al 30</button>
+    </div>
+    <p class="range-note">Puedes cambiar de rango cuando quieras. Tu puntaje se reiniciará al elegir otro.</p>
+  </section>
+
+  <main class="panel">
+    <div class="stats">
+      <div class="pill" id="levelLabel">Nivel: 1</div>
+      <div class="pill" id="scoreLabel">Estrellas ganadas: 0 ⭐</div>
+    </div>
+    <div class="question" id="question" aria-live="polite">¿Cuántas estrellas ves?</div>
+    <div class="playground" id="playground" role="img" aria-label="Estrellas para contar"></div>
+    <div class="answers" id="answers" aria-label="Elige una respuesta"></div>
+    <div class="feedback" id="feedback" aria-live="polite">Cuenta una por una. ¡Tú puedes!</div>
+    <div class="actions">
+      <button class="primary hidden" id="nextButton">Siguiente desafío ➜</button>
+      <button class="secondary" id="restartButton">↻ Volver a empezar</button>
+    </div>
+    <p class="help">Consejo: puedes contar en voz alta o señalar cada estrella. No hay apuro.</p>
+  </main>
+  <footer>Un juego de práctica de Aprende con Tomás · Puedes jugar de nuevo cuando quieras.</footer>
+</div>
+<script>
+(() => {
+  const playground = document.getElementById('playground');
+  const answers = document.getElementById('answers');
+  const feedback = document.getElementById('feedback');
+  const levelLabel = document.getElementById('levelLabel');
+  const scoreLabel = document.getElementById('scoreLabel');
+  const nextButton = document.getElementById('nextButton');
+  const restartButton = document.getElementById('restartButton');
+  const soundToggle = document.getElementById('soundToggle');
+  const motionToggle = document.getElementById('motionToggle');
+  const rangeButtons = [...document.querySelectorAll('.range-button')];
+
+  let level = 1, score = 0, target = 3, answered = false, soundOn = true, motionReduced = false;
+  let rangeMin = 1, rangeMax = 10;
+  let audioContext = null;
+
+  function playTone(kind) {
+    if (!soundOn) return;
+    try {
+      audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioContext.state === 'suspended') audioContext.resume();
+      const now = audioContext.currentTime;
+      const notes = kind === 'good' ? [523.25,659.25,783.99] : [240,190];
+      notes.forEach((freq,i) => {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.type = kind === 'good' ? 'sine' : 'triangle';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.0001, now + i*0.12);
+        gain.gain.exponentialRampToValueAtTime(0.12, now + i*0.12 + 0.025);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + i*0.12 + 0.18);
+        osc.connect(gain); gain.connect(audioContext.destination);
+        osc.start(now + i*0.12); osc.stop(now + i*0.12 + 0.2);
+      });
+    } catch (e) { /* El juego funciona aunque el navegador no permita audio. */ }
+  }
+
+  function randomTarget() {
+    // El desafío siempre utiliza números dentro del rango seleccionado.
+    return Math.floor(Math.random() * (rangeMax - rangeMin + 1)) + rangeMin;
+  }
+
+  function selectRange(min, max, selectedButton) {
+    rangeMin = min;
+    rangeMax = max;
+    level = 1;
+    score = 0;
+    rangeButtons.forEach(button => button.setAttribute('aria-pressed', String(button === selectedButton)));
+    newRound();
+  }
+
+  function newRound() {
+    answered = false;
+    target = randomTarget();
+    levelLabel.textContent = `Nivel: ${level} · Rango: ${rangeMin}–${rangeMax}`;
+    scoreLabel.textContent = `Estrellas ganadas: ${score} ⭐`;
+    document.getElementById('question').textContent = level === 1 ? `¿Cuántas estrellas ves? (del ${rangeMin} al ${rangeMax})` : '¡Las estrellas se mueven! ¿Cuántas ves?';
+    playground.innerHTML = '';
+    playground.setAttribute('aria-label', `Hay ${target} estrellas para contar`);
+    for (let i=0; i<target; i++) {
+      const star = document.createElement('span');
+      star.className = level >= 2 ? 'star moving' : 'star';
+      star.textContent = '⭐';
+      star.setAttribute('aria-hidden','true');
+      if (motionReduced) star.style.animation = 'none';
+      playground.appendChild(star);
+    }
+    answers.innerHTML = '';
+    const options = new Set([target]);
+    while (options.size < 3) {
+      const offset = Math.floor(Math.random() * 7) - 3;
+      const candidate = Math.max(rangeMin, Math.min(rangeMax, target + offset));
+      options.add(candidate);
+    }
+    [...options].sort(() => Math.random()-.5).forEach(n => {
+      const button = document.createElement('button');
+      button.className = 'answer';
+      button.textContent = n;
+      button.setAttribute('aria-label', `Responder ${n}`);
+      button.addEventListener('click', () => chooseAnswer(n, button));
+      answers.appendChild(button);
+    });
+    feedback.className = 'feedback';
+    feedback.textContent = 'Cuenta una por una. ¡Tú puedes!';
+    nextButton.classList.add('hidden');
+  }
+
+  function chooseAnswer(value, button) {
+    if (answered) return;
+    if (value === target) {
+      answered = true;
+      score++;
+      feedback.className = 'feedback good';
+      feedback.textContent = '¡Muy bien! 🎉 ¡Contaste todas las estrellas!';
+      playground.classList.remove('confetti');
+      void playground.offsetWidth;
+      if (!motionReduced) playground.classList.add('confetti');
+      playTone('good');
+      [...answers.querySelectorAll('button')].forEach(b => b.disabled = true);
+      scoreLabel.textContent = `Estrellas ganadas: ${score} ⭐`;
+      nextButton.classList.remove('hidden');
+      nextButton.focus();
+    } else {
+      feedback.className = 'feedback try';
+      feedback.textContent = '¡Buen intento! Cuenta otra vez con calma y prueba de nuevo.';
+      playTone('try');
+      button.animate?.([{transform:'translateX(0)'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(0)'}], {duration:220});
+    }
+  }
+
+  nextButton.addEventListener('click', () => { level++; newRound(); document.getElementById('question').focus?.(); });
+  rangeButtons.forEach(button => button.addEventListener('click', () => selectRange(Number(button.dataset.min), Number(button.dataset.max), button)));
+  restartButton.addEventListener('click', () => { level=1; score=0; newRound(); });
+  soundToggle.addEventListener('click', () => {
+    soundOn = !soundOn;
+    soundToggle.textContent = soundOn ? '🔊 Sonidos: activados' : '🔇 Sonidos: apagados';
+    soundToggle.setAttribute('aria-pressed', String(soundOn));
+    if (soundOn) playTone('good');
+  });
+  motionToggle.addEventListener('click', () => {
+    motionReduced = !motionReduced;
+    document.body.classList.toggle('reduce-motion', motionReduced);
+    motionToggle.textContent = motionReduced ? '🌿 Movimiento reducido: sí' : '🌿 Reducir movimiento';
+    motionToggle.setAttribute('aria-pressed', String(motionReduced));
+    playground.querySelectorAll('.star').forEach(s => {
+      s.style.animation = motionReduced ? 'none' : '';
+    });
+  });
+  newRound();
+})();
+</script>
+</body>
+</html>
